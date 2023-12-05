@@ -1,11 +1,19 @@
-import React from 'react';
-import {SafeAreaView, StatusBar, StyleSheet, Text, View} from 'react-native';
+import React, {useState} from 'react';
+import {
+  SafeAreaView,
+  StatusBar,
+  StyleSheet,
+  Text,
+  View,
+  FlatList,
+} from 'react-native';
 import {useApolloClient, gql} from '@apollo/client';
-import {AllStarshipsResponse} from '../types/starships';
+import {AllStarshipsResponse, Starship} from '../types/starships';
 import {ALL_STARSHIPS_QUERY} from '../queries/allStarships';
 
 const App = () => {
   const apolloClient = useApolloClient();
+  const [starships, setStarships] = useState<Starship[]>([]);
 
   apolloClient
     .query<AllStarshipsResponse>({
@@ -13,20 +21,29 @@ const App = () => {
         ${ALL_STARSHIPS_QUERY}
       `,
     })
-    .then(result => console.log(result.data.allStarships));
+    .then(({data}) => {
+      console.log(data.allStarships.starships);
+      setStarships(data.allStarships.starships);
+    });
 
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar />
-      <View>
-        <Text>Hello World</Text>
-      </View>
+      <FlatList
+        data={starships}
+        renderItem={({item}) => (
+          <View>
+            <Text>{item.name}</Text>
+          </View>
+        )}
+      />
     </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {flex: 1, backgroundColor: 'grey'},
+  starshipList: {},
 });
 
 export default App;

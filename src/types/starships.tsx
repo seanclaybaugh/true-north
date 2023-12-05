@@ -2,7 +2,7 @@ interface Film {
   title: string;
 }
 
-interface Starship {
+export interface Starship {
   name: string;
   model: string;
   manufacturer: string;
