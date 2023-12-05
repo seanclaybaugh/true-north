@@ -11,6 +11,7 @@ import {
 import {useQuery} from '@apollo/client';
 import {AllStarshipsResponse} from '../types/starships';
 import {ALL_STARSHIPS_QUERY} from '../queries/allStarships';
+import Location from './Location';
 
 const App = () => {
   const {loading, data} = useQuery<AllStarshipsResponse>(ALL_STARSHIPS_QUERY);
@@ -19,6 +20,7 @@ const App = () => {
     <SafeAreaView style={styles.container}>
       <StatusBar barStyle={'light-content'} />
       <Text style={styles.header}>STAR WARS SPACESHIPS</Text>
+      <Location />
       {loading ? (
         <ActivityIndicator
           size={'large'}
@@ -28,9 +30,10 @@ const App = () => {
       ) : (
         <FlatList
           data={data?.allStarships.starships}
+          style={styles.starshipList}
           renderItem={({item}) => (
-            <View>
-              <Text style={{color: 'yellow'}}>{item.name}</Text>
+            <View style={styles.listTextContainer}>
+              <Text style={styles.listFont}>{item.name}</Text>
             </View>
           )}
         />
@@ -48,7 +51,16 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginVertical: 20,
   },
-  starshipList: {},
+  starshipList: {width: '100%'},
+  listFont: {
+    color: 'yellow',
+    fontSize: 20,
+  },
+  listTextContainer: {
+    width: '100%',
+    alignItems: 'center',
+    marginVertical: 5,
+  },
   loadingSpinner: {
     flex: 1,
     alignItems: 'center',
