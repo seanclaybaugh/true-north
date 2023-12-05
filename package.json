@@ -12,9 +12,12 @@
   "dependencies": {
     "@apollo/client": "^3.8.8",
     "@apollo/react-hooks": "^4.0.0",
+    "geolib": "^3.3.4",
     "graphql": "^16.8.1",
     "react": "18.1.0",
-    "react-native": "0.70.10"
+    "react-native": "0.70.10",
+    "react-native-geolocation-service": "^5.3.1",
+    "react-native-permissions": "^4.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",
