@@ -8,6 +8,8 @@ import {
   Alert,
 } from 'react-native';
 import {check, request, PERMISSIONS, RESULTS} from 'react-native-permissions';
+import Geolocation from 'react-native-geolocation-service';
+import {getMilesFromSW} from '../utilities';
 
 const Location = () => {
   const [distance, setDistance] = useState<Number>(0);
@@ -27,8 +29,21 @@ const Location = () => {
         await requestLocationPermission();
       } else {
         //get location
-        //calculate distance
-        //set result
+        Geolocation.getCurrentPosition(
+          ({coords}) => {
+            setDistance(
+              getMilesFromSW({
+                latitude: coords.latitude,
+                longitude: coords.longitude,
+              }),
+            );
+          },
+          error => {
+            // See error code charts below.
+            console.log(error.code, error.message);
+          },
+          {enableHighAccuracy: true, timeout: 15000, maximumAge: 10000},
+        );
       }
     } catch (error) {
       console.error('Error checking location permission:', error);
@@ -45,9 +60,7 @@ const Location = () => {
       }
 
       if (result === RESULTS.GRANTED) {
-        //get location
-        //calculate distance
-        //set result
+        checkAndRequestLocationPermission();
       } else {
         Alert.alert(
           'Permission Denied',
